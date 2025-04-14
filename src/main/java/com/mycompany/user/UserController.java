@@ -48,7 +48,7 @@ public class UserController {
 		      m.addAttribute("pass", pass);
 		      session.setAttribute("uname", uname);
 		      
-		      return "index";
+		      return "redirect:/users";
 	     }else {	     
 		     m.addAttribute("error", "Incorrect Username & Password");
 		     return "login";
