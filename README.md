@@ -53,4 +53,9 @@ src/main/resources/application.properties
 ### 4.Access the Application
     http://localhost:8080
 
+### 5.访问 Swagger UI
+	OpenAPI JSON 文档：http://localhost:8080/v3/api-docs
+
+    Swagger UI 界面：http://localhost:8080/swagger-ui.html
+
 
