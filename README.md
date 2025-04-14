@@ -1,3 +1,7 @@
+![register page](https://github.com/Luwhai/SpringBootCRUDMysql/blob/main/pic2.png)
+![login page](https://github.com/Luwhai/SpringBootCRUDMysql/blob/main/pic3.png)
+![list page](https://github.com/Luwhai/SpringBootCRUDMysql/blob/main/pic4.png)
+
 # SpringBootCRUDMysql
 这是一个简单的CRUD 应用
 
