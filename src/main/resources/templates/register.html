@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- [Head] start -->
+
+<head>
+  <title>Sign up | Mantis Bootstrap 5 Template</title>
+  <!-- [Meta] -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/x-icon"> 
+<link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" >
+<link rel="stylesheet" href="../assets/fonts/feather.css" >
+<link rel="stylesheet" href="../assets/fonts/fontawesome.css" >
+<link rel="stylesheet" href="../assets/fonts/material.css" >
+<link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" >
+<link rel="stylesheet" href="../assets/css/style-preset.css" >
+
+</head>
+
+<body>
+ 
+ <form th:action="@{/users/save}" method="post" th:object="${user}">
+  <div class="auth-main">
+    <div class="auth-wrapper v3">
+      <div class="auth-form">
+        
+        <div class="card my-5">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+              <h3 class="mb-0"><b>Sign up</b></h3>
+              <a th:href="@{'/users/login'}" class="link-primary">Already have an account?</a>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <input type="hidden" namw="id">
+                  <label class="form-label">First Name*</label>
+                  <input type="text" name="firstName" class="form-control" placeholder="First Name" required minlength="2" maxlength="45" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" name="lastName" class="form-control" placeholder="Last Name">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label">Email Address*</label>
+              <input type="email" name="email" class="form-control" placeholder="Email Address">
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" placeholder="Password">
+            </div>
+            <p class="mt-4 text-sm text-muted"></p>
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-primary">Create Account</button>
+            </div>
+                                    
+          </div>
+        </div>
+        
+        </form>
+        <div th:if="${message}" class="alert alert-success text-center">
+        	[[${message}]]
+    	</div>
+        <div class="auth-footer row">
+          <!-- <div class=""> -->
+            <div class="col my-1">
+              <p class="m-0">Copyright © <a href="#">My WebApplication</a></p>
+            </div>
+            <div class="col-auto my-1">
+              <ul class="list-inline footer-link mb-0">
+                <li class="list-inline-item"><a href="../">Home</a></li>
+                <li class="list-inline-item"><a href="#">Contact us</a></li>
+              </ul>
+            </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+  <!-- Required Js -->
+  <script src="../assets/js/plugins/popper.min.js"></script>
+  <script src="../assets/js/plugins/simplebar.min.js"></script>
+  <script src="../assets/js/plugins/bootstrap.min.js"></script>
+  <script src="../assets/js/fonts/custom-font.js"></script>
+  <script src="../assets/js/pcoded.js"></script>
+  <script src="../assets/js/plugins/feather.min.js"></script>
+
+<!-- [Body] end -->
+
+</html>

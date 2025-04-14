@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:if="${session.uname != null}">
+        欢迎，<span th:text="${session.uname}"></span>
+        <a href="/logout">退出</a>
+    </div>
+    <div th:unless="${session.uname != null}">
+        <a href="/login">登录</a>
+    </div>
+</body>
+</html>

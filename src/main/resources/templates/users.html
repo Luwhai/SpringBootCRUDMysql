@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://www.thymeleaf.org/ " xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+    
+  <!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"  /> -->
+    <link rel="stylesheet" href="https://cdn.staticfile.net/bootstrap/5.3.2/css/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+		
+</head>
+<body>
+ 
+<div class="container  text-center">
+
+         <!-- Include the header fragment -->
+        <div th:insert="~{fragments/header :: header}"></div>
+        
+        
+        
+		
+        Welcome，<span th:text="${session.uname}"></span>
+        
+        <!-- 卡片使用 
+        <div class="card" style="width: 18rem;">
+        <div class="card-body">
+        <h5 class="card-title">微软发布 Win11</h5>
+        <h6 class="card-subtitle mb-2 text-muted">科技动态</h6>
+        <p class="card-text">
+          微软已宣布将于 6 月 24 日举行“What's next for Windows”活动，届时将发布下一代桌面操作系统 Win11 及其应用商店等内容。
+        </p>
+        <a href="#" class="card-link">了解详情</a>
+        <a href="#" class="card-link">下载试用</a>
+        </div>
+        </div>
+        -->
+        <!--  
+        <div class="card w-75">
+	        <div class="card-body">
+	            <h5 class="card-title">微软发布 Win11</h5>
+	            <p class="card-text">
+	              软已宣布将于 6 月 24 日举行“What's next for Windows”活动，届时将发布下一代桌面操作系统 Win11 及其应用商店等内容。
+	            </p>
+	            <a href="#" class="btn btn-primary">了解详情</a>
+	        </div>
+        </div>
+        -->
+    
+    <nav  class="navbar navbar-expand-lg navbar-light">
+           <div class="container">
+           <div class="collapse navbar-collapse" id="navbarNav">
+           <ul class="navbar-nav">
+             <li class="nav-item">
+               <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+             </li>
+             
+             <li class="nav-item">
+               <a class="nav-link" th:href="@{/users/logout}">Logout</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+             </li>
+             <li>
+             
+             </li>
+           </ul>
+	           <form class="d-flex" th:action="@{/users}">
+	           <input class="form-control me-2" type="search" id="keyword" name="keyword" placeholder="输入关键词" aria-label="Search">
+	           <button class="btn btn-outline-light text-nowrap" type="submit">搜索</button>
+	         </form>
+	         <!-- theme setting begin -->
+	           <div class="p-2 rounded">
+				    <div class="form-check form-switch" id="btnSwitch">
+				        <input class="form-check-input" type="hidden" role="switch" id="flexSwitchCheckDefault">
+				        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked onclick="changeTheme()">
+				        <label class="form-check-label" for="flexSwitchCheckChecked">
+				           <i id="theme-icon" class="bi-sun"></i>
+				           <i id="theme-icon" class="bi-moon-fill"></i>Theme
+				        </label>
+				    </div>
+				</div>
+           </div>
+           </div>
+     </nav>
+
+    <div th:if="${message}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+
+    <div>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>E-mail</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Enabled</th>
+                <th>Operators</th>
+            </tr>
+            </thead>
+        <tbody>
+ 
+        <tr th:if="${users.empty}">
+            <td colspan="6">[[${msg123}]]</td>
+          </tr>
+        <th:block th:each="user : ${users.content}">
+            <tr>
+                <td>[[${user.id}]]</td>
+                <td>[[${user.email}]]</td>
+                <td>[[${user.firstName}]]</td>
+                <td>[[${user.lastName}]]</td>
+                <td>[[${user.enabled}]]</td>
+                <td>
+                    <!-- <a class="h6 mr-3" th:href="@{'/users/edit/' + ${user.id}}">Edit</a> -->
+                    <!-- <a class="h6" th:href="@{'/users/delete/' + ${user.id}}" >Delete</a> -->
+                    <a id="view" 
+                       th:href="@{'/users/' + ${user.id}}"  
+                       class="btn btn-info" 
+                       th:data-id="${user.id}" 
+                       th:data-firstName="${user.firstName}" 
+                       th:data-lastName="${user.lastName}" 
+					   th:data-email="${user.email}"  
+					   th:data-url="@{'/users/' + ${user.id}}"
+                       tabindex="-1" role="button" aria-disabled="true" data-bs-toggle="modal"
+                              data-bs-target="#user-modal">View</a>
+                     
+                       
+                    <a th:href="@{'/users/edit/' + ${user.id}}"  
+                       class="btn btn-primary" 
+                       tabindex="-1" role="button" aria-disabled="true">Edit</a>
+
+					<button class="btn btn-danger" 
+					        th:data-id="${user.id}" 					        
+					        th:data-url="@{'/users/delete/' + ${user.id}}"
+					        data-bs-toggle="modal" 
+					        data-bs-target="#deleteConfirmModal">Delete</button>																		
+                </td>
+            </tr>         
+        </th:block>
+        </tbody>
+        </table>
+ 		
+        <!-- 分页导航 begin -->       
+        <div th:if="${users.totalElements gt 0}">
+         <nav>
+	     <ul class="pagination">
+	        <li class="m-2">Total Records: [[${users.totalElements}]]</li>
+	        <li class="m-2">Total Pages: [[${users.totalPages}]]</li>
+	        <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/users(page=0)}">首页</a>
+            </li>
+	        <!-- 上一页 -->
+	        <li class="page-item" th:classappend="${users.hasPrevious()} ? '' : 'disabled'">
+	            <a class="page-link" 
+	               th:href="@{/users(keyword=${keyword}, page=${users.number-1})}" 
+	               th:unless="${!users.hasPrevious()}">上一页</a>
+	            <span class="page-link" th:if="${!users.hasPrevious()}">上一页</span>
+	        </li>
+	
+	        <!-- 页码 -->
+	        <li th:each="pageNum : ${#numbers.sequence(0, users.totalPages-1)}" 
+	            class="page-item" 
+	            th:classappend="${pageNum == users.number} ? 'active' : ''">
+	            <a class="page-link" 
+	               th:href="@{/users(keyword=${keyword},page=${pageNum})}" 
+	               th:text="${pageNum + 1}"></a>
+	        </li>
+	
+	        <!-- 下一页 -->
+	        <li class="page-item" th:classappend="${users.hasNext()} ? '' : 'disabled'">
+	            <a class="page-link" 
+	               th:href="@{/users(keyword=${keyword},page=${users.number}+1)}" 
+	               th:unless="${!users.hasNext()}">下一页</a>
+	            <span class="page-link" th:if="${!users.hasNext()}">下一页</span>
+	        </li>
+	        <!-- 末页 -->
+	        <li class="page-item" th:classappend="${currentPage == users.totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/users(page=${users.totalPages - 1})}">末页</a>
+            </li>	        
+	    </ul>
+	    </nav>	    	    
+	</div>
+		<!-- 分页导航 end -->
+  </div>	
+
+    <!-- Include the footer fragment -->
+    <div th:insert="~{fragments/footer :: footer}"></div>
+   
+ </div>
+ 
+<!-- 删除User弹出 begin --> 
+ <div class="modal" role="dialog" id="deleteConfirmModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">删除确认</h5>
+      </div>
+      <div class="modal-body">
+        确定要删除这条记录吗？此操作不可逆！
+      </div>
+      <div class="modal-footer">
+        
+        <form id="deleteForm" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="submit" class="btn btn-warning">确认删除</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>		
+<!-- 删除User弹出 end --> 
+ 
+ <!-- User 弹出详细信息 begin -->
+  <div class="modal fade" id="user-modal" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="mb-0">User Details</h5>
+          <a href="#" class="avtar avtar-s btn-link-danger" data-bs-dismiss="modal">
+            <i class="ti ti-x f-20">Close</i>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card">
+                <div class="card-body position-relative">
+                  <div class="position-absolute end-0 top-0 p-3">
+                    <span class="badge bg-primary">Relationship</span>
+                  </div>
+                  <div class="text-center mt-3">
+                    <div class="chat-avtar d-inline-flex mx-auto">
+                      <img class="rounded-circle img-fluid wid-60" src="../assets/images/user/avatar-5.jpg"
+                        alt="User image">
+                    </div>
+                    <h5 id="username" class="mb-0">XXX</h5>
+                    <p class="text-muted text-sm">tester</p>
+                    <hr class="my-3">
+                    <div class="row g-3">
+                      <div class="col-4">
+                        <h5 class="mb-0">45</h5>
+                        <small class="text-muted">Age</small>
+                      </div>
+                      <div class="col-4 border border-top-0 border-bottom-0">
+                        <h5 class="mb-0">86%</h5>
+                        <small class="text-muted">Progress</small>
+                      </div>
+                      <div class="col-4">
+                        <h5 class="mb-0">7634</h5>
+                        <small class="text-muted">Visits</small>
+                      </div>
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-inline-flex align-items-center justify-content-between w-100 mb-3">
+                      <i class="ti ti-mail"></i>
+                      <p id="email" class="mb-0">bo@gmail.com</p>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-between w-100 mb-3">
+                      <i class="ti ti-phone"></i>
+                      <p class="mb-0">84996968</p>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-between w-100 mb-3">
+                      <i class="ti ti-map-pin"></i>
+                      <p class="mb-0">China</p>
+                    </div>
+                    <div class="d-inline-flex align-items-center justify-content-between w-100">
+                      <i class="ti ti-link"></i>
+                      <a href="#" class="link-primary">
+                        <p class="mb-0">https://www.china.com</p>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Personal Details</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 pt-0">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="mb-1 text-muted">Full Name</p>
+                          <h6 id="fullName" class="mb-0">Aaron Poole</h6>
+                        </div>
+                        <div class="col-md-6">
+                          
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item px-0">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="mb-1 text-muted">Country</p>
+                          <h6 class="mb-0">China</h6>
+                        </div>
+                        <div class="col-md-6">
+                          <p class="mb-1 text-muted">Zip Code</p>
+                          <h6 class="mb-0">247849</h6>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item px-0 pb-0">
+                      <p class="mb-1 text-muted">Address</p>
+                      <h6 class="mb-0">XXX XXX</h6>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <h5>About me</h5>
+                </div>
+                <div class="card-body">
+                  <p class="mb-0">Hello, I’m a tester.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <!-- User 弹出详细信息 end -->  
+   
+<script src="https://cdn.staticfile.net/bootstrap/5.3.2/js/bootstrap.min.js"></script> 
+<script>
+const themeColor = localStorage.getItem("themeColor"); 
+if (themeColor != null) {
+  document.documentElement.setAttribute('data-bs-theme', themeColor);
+}
+
+function changeTheme() {
+    if (document.documentElement.getAttribute('data-bs-theme') == 'light') {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        document.getElementById("theme-icon").class="bi bi-moon-fill";
+        document.docalStorage.setItem("themeColor", "dark");
+        
+    } else {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem("themeColor", "light");
+    }        
+}
+
+document.querySelectorAll('.btn.btn-danger').forEach(btn => {
+ 
+    btn.addEventListener('click', function() {
+
+    // 获取当前数据 ID 和 URL
+    const deleteUrl = this.getAttribute('data-url');
+
+    // 动态设置表单提交地址
+    document.getElementById('deleteForm').action = deleteUrl;
+
+  });
+});
+
+document.querySelectorAll('.btn.btn-info').forEach(btn => {
+	 
+    btn.addEventListener('click', function() {
+	
+    // 获取当前数据 ID 和 URL
+    const userId = this.getAttribute('data-id');
+    const firstName = this.getAttribute('data-firstName');
+   
+    const lastName = this.getAttribute('data-lastName');
+    const userEmail = this.getAttribute('data-email');
+    
+    //alert(userId + ":" + firstName + ":" +userEmail);
+    // 动态设置表单提交地址
+    document.getElementById('username').innerHTML  = firstName;
+    document.getElementById('email').innerHTML  = userEmail;
+    document.getElementById('fullName').innerHTML  = firstName + "," +lastName;
+
+  });
+});
+
+</script>
+
